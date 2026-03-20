@@ -1,3 +1,67 @@
+# 📺 新闻联播文字稿自动化推送系统
+
+本项目是一个基于 GitHub Actions 的纯自动化新闻获取与分发工具。系统每天会在 21:00 自动抓取当天的《新闻联播》完整文字稿，通过转换和排版后，多渠道推送到你的设备上，让你像「批阅奏章」一样优雅、高效地阅读每日官媒资讯。
+
+## ✨ 核心亮点
+
+* 🤖 **极致的自动化**：打破 GitHub 默认定时器的延迟魔咒，支持通过外部 API 精准触发，确保每天新闻「分秒不差」地送达。
+* 📧 **精美的邮件推送**：不再是简陋的纯文本！自动将 Markdown 转换为注入了自定义 CSS 样式的 HTML 邮件，字号、行距、加粗完美适配主流邮箱客户端（并使用 BCC 密送保护隐私）。
+* 📡 **现代化的 RSS 订阅**：每天自动生成标准的 `feed.xml` 订阅源，带有专属频道 Logo 和标准时间戳，完美兼容各种主流 RSS 阅读器。配合加速节点，国内也能秒级刷新。
+* 🆓 **真正的零成本部署**：无需购买和维护任何服务器。依托 GitHub Actions 的免费算力、免费的第三方 Cron 服务以及各大邮箱的免费 SMTP 即可完美运转。
+
+---
+
+## 🚀 快速部署指南
+
+只需简单的几个步骤，你就能拥有一个属于自己的自动化新闻推送系统。
+
+### 第一步：Fork 本项目
+点击页面右上角的 **Fork** 按钮，将本项目复制到你自己的 GitHub 账号下。
+
+### 第二步：开启仓库读写权限
+为了让机器人能自动保存生成的新闻文件和 RSS 源：
+1. 进入你 Fork 后的仓库，点击顶部的 `Settings`。
+2. 在左侧菜单找到 `Actions` -> `General`。
+3. 下拉找到 **Workflow permissions**，勾选 `Read and write permissions` 并保存。
+
+### 第三步：配置 GitHub Secrets (邮箱密钥)
+为了安全发送邮件，我们需要在 GitHub 中配置你的邮箱信息。
+进入 `Settings` -> `Secrets and variables` -> `Actions`，点击 `New repository secret`，依次添加以下三个变量：
+
+| 变量名 (Name) | 填入的内容 (Secret) |
+| :--- | :--- |
+| `MAIL_USERNAME` | 你的发件邮箱账号（例如：`your_email@qq.com`） |
+| `MAIL_PASSWORD` | 你的发件邮箱 **SMTP 授权码**（注意：不是登录密码！） |
+| `MAIL_TO` | 你接收新闻的邮箱（可以和发件邮箱相同，支持填多个，用逗号隔开） |
+
+> 💡 **提示**：系统默认使用 QQ 邮箱的 SMTP 服务器 (`smtp.qq.com`)。如果你使用的是网易 163 或 Gmail，请在 `.github/workflows/main.yml` 文件中修改 `server_address` 字段。
+
+### 第四步：设置外部精准定时触发 (Cron-job.org)
+由于 GitHub 默认的定时器存在严重延迟，我们使用免费的 [cron-job.org](https://cron-job.org/) 来精准触发。
+
+1. **获取 GitHub Token**：去 GitHub 设置页生成一个 Personal Access Token (Classic)，勾选 `workflow` 权限并复制保存。
+2. **创建定时任务**：在 cron-job.org 创建新任务，设为你需要的时间（建议北京时间 21:00）。
+3. **配置 API 请求**：
+   - **URL**: `https://api.github.com/repos/你的用户名/你的仓库名/actions/workflows/你的 yml 文件名.yml/dispatches`
+   - **Method**: `POST`
+   - **Request Body**: `{"ref":"master"}` *(如果你的默认分支是 main，请改为 main)*
+   - **Headers** :
+     - `Accept`: `application/vnd.github+json`
+     - `Authorization`: `Bearer 你的 Token` *(注意 Bearer 后有空格)*
+     - `Content-Type`: `application/json`
+     - `X-GitHub-Api-Version`: `2022-11-28`
+
+---
+
+## 📱 如何订阅 RSS？
+
+当 Action 成功运行一次后，你的仓库根目录会自动生成 `feed.xml` 文件。你可以使用以下链接在任意 RSS 客户端（如 Inoreader, Feedly, NetNewsWire）中订阅：
+
+**🚀 国内加速订阅链接（推荐）：**
+```text
+[https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml](https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml)
+
+
 # 新闻联播文字稿
 
 爬取自 [CCTV 央视网](https://tv.cctv.com/)
