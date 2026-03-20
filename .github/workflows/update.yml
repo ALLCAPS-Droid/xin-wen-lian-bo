@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # 东八区 (UTC+8), 所以要-8 小时
-    - cron: '30 11 * * *'
+    - cron: '40 12 * * *'
 
 jobs:
   update:
