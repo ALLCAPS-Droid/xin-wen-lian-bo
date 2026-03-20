@@ -75,7 +75,11 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           # 在主题中引用刚才生成的日期变量
           subject: 新闻联播文字稿 - ${{ env.SUBJECT_DATE }}
-          to: ${{ secrets.MAIL_TO }}
           from: 新闻联播小助手
-          html_body: file://email_body.html    
+          # 把明面的收件人写成发件人自己（防垃圾邮件屏蔽）
+          to: ${{ secrets.MAIL_USERNAME }} 
+          # 把真正要发送的邮箱变量放在密送（bcc）里
+          bcc: ${{ secrets.MAIL_TO }}
+          # ==========================================================
+          html_body: file://email_body.html
           ignore_cert: true
