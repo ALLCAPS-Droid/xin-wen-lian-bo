@@ -40,40 +40,29 @@ jobs:
           echo "SUBJECT_DATE=$SUBJECT_DATE" >> $GITHUB_ENV
      
       # ================= 修改：将 Markdown 转换为 HTML 并注入样式 =================
-      - name: Convert Markdown to HTML with CSS
+      - name: Convert Markdown to HTML with Styles
         run: |
+          # 1. 安装转换工具并生成基础 HTML
           npm install -g marked
-          # 1. 先将 markdown 转换为纯 HTML，存入临时文件 temp.html
-          marked ${{ env.FILE_PATH }} > temp.html
+          marked ${{ env.FILE_PATH }} > raw_body.html
           
-          # 2. 创建一段强制加粗标题、优化排版的 CSS 样式，写入 email_body.html
-          echo '<style>
-            body { 
-              font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif; 
-              line-height: 1.6; 
-              color: #333; 
-              padding: 10px; 
-            }
-            /* 强制所有层级的标题加粗，并设置颜色和间距 */
-            h1, h2, h3, h4, h5, h6 { 
-              font-weight: bold !important; 
-              color: #000 !important; 
-              margin-top: 1.5em; 
-              margin-bottom: 0.5em; 
-            }
-            /* 强制加粗语法生效 */
-            strong, b { 
-              font-weight: bold !important; 
-              color: #000 !important; 
-            }
-            /* 段落间距 */
-            p { 
-              margin-bottom: 1em; 
-            }
-          </style>' > email_body.html
+          # 2. 创建一段自定义 CSS 样式表
+          # 使用 !important 强制覆盖邮箱客户端的默认设置
+          # font-size: inherit; 是关键，让加粗字体继承标题的大小
+          cat << 'EOF' > style_block.html
+          <style>
+            body { font-family: "Microsoft YaHei", sans-serif; line-height: 1.8; color: #333333; font-size: 16px; }
+            h1, h2, h3, h4 { color: #1a1a1a; font-weight: bold !important; margin-top: 20px; margin-bottom: 10px; }
+            h1 { font-size: 24px !important; border-bottom: 1px solid #eeeeee; padding-bottom: 5px; }
+            h2 { font-size: 20px !important; }
+            h3 { font-size: 18px !important; }
+            strong, b { font-weight: bold !important; font-size: inherit !important; }
+            p { margin-bottom: 15px; }
+          </style>
+          EOF
           
-          # 3. 将转换好的正文 HTML 拼接到样式表后面
-          cat temp.html >> email_body.html
+          # 3. 把样式表和正文内容合并，生成最终要发送的 html
+          cat style_block.html raw_body.html > email_body.html
       # =========================================================================
       
       - name: Send email with news
