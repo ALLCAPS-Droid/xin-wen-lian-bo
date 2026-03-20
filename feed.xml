@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
-    <image>
-      <url>https://gh-proxy.org/https://raw.githubusercontent.com/ALLCAPS-Droid/xin-wen-lian-bo/refs/heads/master/logo.png</url>
-      <title>新闻联播文字稿</title>
-      <link>https://github.com/</link>
-    </image>
+        <title>新闻联播文字稿</title>
+        <link>https://github.com/ALLCAPS-Droid/xin-wen-lian-bo/</link>
         <description>每日新闻联播文字稿自动更新 RSS</description>
+        
+        <image>
+            <url>https://gh-proxy.org/https://raw.githubusercontent.com/ALLCAPS-Droid/xin-wen-lian-bo/refs/heads/master/logo.png</url>
+            <title>新闻联播文字稿</title>
+            <link>https://github.com/</link>
+        </image>
         <lastBuildDate>Fri, 20 Mar 2026 15:55:42 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
