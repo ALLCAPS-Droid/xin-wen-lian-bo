@@ -1,6 +1,6 @@
 # 新闻联播文字稿
 
-爬取自 [cctv 央视网](https://tv.cctv.com/)
+爬取自 [CCTV 央视网](https://tv.cctv.com/)
 
 ## 文字稿目录: 
 
