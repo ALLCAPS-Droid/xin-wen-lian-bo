@@ -13,6 +13,7 @@ const feed = new Feed({
   id: "https://github.com/",
   link: "https://github.com/",
   language: "zh-CN",
+  favicon: "https://gh-proxy.org/https://raw.githubusercontent.com/ALLCAPS-Droid/xin-wen-lian-bo/refs/heads/master/logo.png",
   updated: new Date(),
 });
 
