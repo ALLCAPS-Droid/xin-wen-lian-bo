@@ -1,6 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const { Feed } = require('feed');
 const marked = require('marked');
+
+// 明确指出新闻稿存放在 news 文件夹中
+const newsDir = 'news';
 
 // 1. 初始化 RSS 频道信息
 const feed = new Feed({
@@ -12,17 +16,29 @@ const feed = new Feed({
   updated: new Date(),
 });
 
-// 2. 找到当前目录下所有类似 20260320.md 的文件，按日期倒序排列，取最新的 15 篇
-const files = fs.readdirSync('.')
+// 检查文件夹是否存在
+if (!fs.existsSync(newsDir)) {
+  console.log(`错误：未找到 ${newsDir} 文件夹。`);
+  process.exit(1);
+}
+
+// 2. 读取 news 文件夹下所有类似 20260320.md 的文件，取最新的 15 篇
+const files = fs.readdirSync(newsDir)
   .filter(f => /^\d{8}\.md$/.test(f))
   .sort()
   .reverse()
   .slice(0, 15);
 
+if (files.length === 0) {
+  console.log('没有找到任何格式为 YYYYMMDD.md 的新闻文件，跳过生成。');
+  process.exit(0);
+}
+
 // 3. 循环处理每一天的文件
 files.forEach(file => {
-  const content = fs.readFileSync(file, 'utf8');
-  // 将 Markdown 转成带格式的 HTML，保证 RSS 阅读器里排版好看
+  const filePath = path.join(newsDir, file);
+  const content = fs.readFileSync(filePath, 'utf8');
+  // 将 Markdown 转成带格式的 HTML
   const htmlContent = marked.parse(content); 
   
   // 提取文件名中的年月日
@@ -37,10 +53,10 @@ files.forEach(file => {
     id: file,
     link: `https://github.com/`, 
     content: htmlContent,
-    date: new Date(`${y}-${m}-${d}T21:00:00+08:00`), // 设定为北京时间晚上 9 点
+    date: new Date(`${y}-${m}-${d}T21:00:00+08:00`), 
   });
 });
 
-// 4. 生成 feed.xml 文件
+// 4. 生成 feed.xml 文件到根目录
 fs.writeFileSync('feed.xml', feed.rss2());
-console.log('RSS 订阅源 feed.xml 已成功生成！');
+console.log('RSS 订阅源 feed.xml 已成功生成！包含了 ' + files.length + ' 篇文章。');
