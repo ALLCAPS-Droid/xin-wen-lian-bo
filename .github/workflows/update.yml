@@ -3,8 +3,8 @@ name: Update today xin wen lian bo
 on:
   workflow_dispatch:
   schedule:
-    # 东八区 (UTC+8), 所以要-8小时
-    - cron: '30 12 * * *'
+    # 东八区 (UTC+8), 所以要-8 小时
+    - cron: '30 11 * * *'
 
 jobs:
   update:
@@ -26,3 +26,30 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
+# ================= 新增：获取当天文件名并发送邮件 =================
+      - name: Prepare email variables
+        id: prepare_vars
+        run: |
+          # 1. 获取用于匹配文件名的日期 (假设原项目格式是 YYYYMMDD)
+          FILE_DATE=$(TZ='Asia/Shanghai' date +'%Y%m%d') 
+          FILE_PATH="news/${FILE_DATE}.md" 
+          echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+          
+          # 2. 获取用于邮件标题的友好日期格式 (例如：2026 年 03 月 20 日)
+          SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y 年%m 月%d 日')
+          echo "SUBJECT_DATE=$SUBJECT_DATE" >> $GITHUB_ENV
+
+      - name: Send email with news
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.qq.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          # 在主题中引用刚才生成的日期变量
+          subject: 新闻联播文字稿 - ${{ env.SUBJECT_DATE }}
+          to: ${{ secrets.MAIL_TO }}
+          from: 新闻联播小助手
+          body: file://${{ env.FILE_PATH }}
+          ignore_cert: true
