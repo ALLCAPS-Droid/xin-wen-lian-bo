@@ -36,16 +36,45 @@ jobs:
           echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
           
           # 2. 获取用于邮件标题的友好日期格式 (例如：2026 年 03 月 20 日)
-          SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y年%m月%d日')
+          SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y 年%m 月%d 日')
           echo "SUBJECT_DATE=$SUBJECT_DATE" >> $GITHUB_ENV
      
-# ================= 新增：将 Markdown 转换为 HTML =================
-      - name: Convert Markdown to HTML
+      # ================= 修改：将 Markdown 转换为 HTML 并注入样式 =================
+      - name: Convert Markdown to HTML with CSS
         run: |
-          # 安装 marked 工具
           npm install -g marked
-          # 将 markdown 文件转换为 html 文件，并命名为 email_body.html
-          marked ${{ env.FILE_PATH }} > email_body.html
+          # 1. 先将 markdown 转换为纯 HTML，存入临时文件 temp.html
+          marked ${{ env.FILE_PATH }} > temp.html
+          
+          # 2. 创建一段强制加粗标题、优化排版的 CSS 样式，写入 email_body.html
+          echo '<style>
+            body { 
+              font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif; 
+              line-height: 1.6; 
+              color: #333; 
+              padding: 10px; 
+            }
+            /* 强制所有层级的标题加粗，并设置颜色和间距 */
+            h1, h2, h3, h4, h5, h6 { 
+              font-weight: bold !important; 
+              color: #000 !important; 
+              margin-top: 1.5em; 
+              margin-bottom: 0.5em; 
+            }
+            /* 强制加粗语法生效 */
+            strong, b { 
+              font-weight: bold !important; 
+              color: #000 !important; 
+            }
+            /* 段落间距 */
+            p { 
+              margin-bottom: 1em; 
+            }
+          </style>' > email_body.html
+          
+          # 3. 将转换好的正文 HTML 拼接到样式表后面
+          cat temp.html >> email_body.html
+      # =========================================================================
       
       - name: Send email with news
         uses: dawidd6/action-send-mail@v3
