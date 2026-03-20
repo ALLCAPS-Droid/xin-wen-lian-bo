@@ -38,7 +38,15 @@ jobs:
           # 2. 获取用于邮件标题的友好日期格式 (例如：2026 年 03 月 20 日)
           SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y 年%m 月%d 日')
           echo "SUBJECT_DATE=$SUBJECT_DATE" >> $GITHUB_ENV
-
+     
+# ================= 新增：将 Markdown 转换为 HTML =================
+      - name: Convert Markdown to HTML
+        run: |
+          # 安装 marked 工具
+          npm install -g marked
+          # 将 markdown 文件转换为 html 文件，并命名为 email_body.html
+          marked ${{ env.FILE_PATH }} > email_body.html
+      
       - name: Send email with news
         uses: dawidd6/action-send-mail@v3
         with:
@@ -51,5 +59,5 @@ jobs:
           subject: 新闻联播文字稿 - ${{ env.SUBJECT_DATE }}
           to: ${{ secrets.MAIL_TO }}
           from: 新闻联播小助手
-          body: file://${{ env.FILE_PATH }}
+          html_body: file://email_body.html    
           ignore_cert: true
