@@ -10,9 +10,12 @@ const newsDir = 'news';
 const feed = new Feed({
   title: "新闻联播文字稿",
   description: "每日新闻联播文字稿自动更新 RSS",
-  id: "https://github.com/",
-  link: "https://github.com/",
+  id: "https://github.com/ALLCAPS-Droid/xin-wen-lian-bo/",
+  link: "https://github.com/ALLCAPS-Droid/xin-wen-lian-bo/",
   language: "zh-CN",
+  // image 对应的是大号封面图（<atom:logo> 和 RSS 2.0 image）
+  image: "https://gh-proxy.org/https://raw.githubusercontent.com/ALLCAPS-Droid/xin-wen-lian-bo/refs/heads/master/logo.png",
+  // favicon 对应的是左侧列表的小图标（<atom:icon>）
   favicon: "https://gh-proxy.org/https://raw.githubusercontent.com/ALLCAPS-Droid/xin-wen-lian-bo/refs/heads/master/logo.png",
   updated: new Date(),
 });
