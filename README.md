@@ -62,11 +62,11 @@
 [https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml](https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml)
 
 
-# 新闻联播文字稿
+## 新闻联播文字稿
 
 爬取自 [CCTV 央视网](https://tv.cctv.com/)
 
-## 文字稿目录: 
+### 文字稿目录: 
 
 <!-- INSERT -->
 - [20260320](./news/20260320.md)
