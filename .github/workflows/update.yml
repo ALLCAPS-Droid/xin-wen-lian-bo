@@ -36,7 +36,7 @@ jobs:
           echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
           
           # 2. 获取用于邮件标题的友好日期格式 (例如：2026 年 03 月 20 日)
-          SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y 年%m 月%d 日')
+          SUBJECT_DATE=$(TZ='Asia/Shanghai' date +'%Y 年%m 月%d 日' | tr -d ' ')
           echo "SUBJECT_DATE=$SUBJECT_DATE" >> $GITHUB_ENV
      
       # ================= 修改：将 Markdown 转换为 HTML 并注入样式 =================
