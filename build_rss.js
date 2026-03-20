@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const { Feed } = require('feed');
-const marked = require('marked');
+import fs from 'fs';
+import path from 'path';
+import { Feed } from 'feed';
+import { marked } from 'marked';
 
 // 明确指出新闻稿存放在 news 文件夹中
 const newsDir = 'news';
@@ -60,3 +60,4 @@ files.forEach(file => {
 // 4. 生成 feed.xml 文件到根目录
 fs.writeFileSync('feed.xml', feed.rss2());
 console.log('RSS 订阅源 feed.xml 已成功生成！包含了 ' + files.length + ' 篇文章。');
+
