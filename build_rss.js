@@ -57,6 +57,14 @@ files.forEach(file => {
     id: file,
     link: `https://github.com/`, 
     content: htmlContent,
+    // ====== 强行加上作者信息，防止某些弱智客户端报错 ======
+    author: [
+      {
+        name: "CCTV",
+        link: "https://tv.cctv.com/"
+      }
+    ],
+    // =========================================================
     date: new Date(`${y}-${m}-${d}T21:00:00+08:00`), 
   });
 });
