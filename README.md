@@ -60,7 +60,7 @@
 **🚀 国内加速订阅链接（推荐）：**
 ```text
 [https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml](https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml)
-
+```
 
 # 新闻联播文字稿
 
