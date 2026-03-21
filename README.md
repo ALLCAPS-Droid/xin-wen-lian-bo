@@ -58,6 +58,7 @@
 当 Action 成功运行一次后，你的仓库根目录会自动生成 `feed.xml` 文件。你可以使用以下链接在任意 RSS 客户端（如 Inoreader, Feedly, NetNewsWire）中订阅：
 
 **🚀 国内加速订阅链接（推荐）：**
+
 ```text
 [https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml](https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml)
 
