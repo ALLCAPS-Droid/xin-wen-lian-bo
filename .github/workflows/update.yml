@@ -65,7 +65,7 @@ jobs:
       
       # ================= 邮件处理 3：发送精美邮件 =================
       - name: Send email with news
-        uses: dawidd6/action-send-mail@v3
+        uses: dawidd6/action-send-mail@v4
         with:
           server_address: smtp.qq.com
           server_port: 465
@@ -74,7 +74,6 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 新闻联播文字稿 - ${{ env.SUBJECT_DATE }}
           from: 新闻联播小助手
-          to: ${{ secrets.MAIL_USERNAME }} 
           bcc: ${{ secrets.MAIL_TO }}
           html_body: file://email_body.html
           ignore_cert: true
