@@ -55,11 +55,74 @@
 
 ## 📱 如何订阅 RSS？
 
-当 Action 成功运行一次后，你的仓库根目录会自动生成 `feed.xml` 文件。你可以使用以下链接在任意 RSS 客户端（如 Inoreader, Feedly, NetNewsWire）中订阅：
+当 Action 成功运行一次后，仓库根目录会自动生成标准规范的 `feed.xml` 订阅源文件。由于不同 RSS 客户端的抓取机制不同，这里提供以下四种订阅方案，请根据自己的情况选择：
 
-**🚀 国内加速订阅链接（推荐）：**
+### 方案一：开启 GitHub Pages（⭐ 强烈推荐：配置最简单、无缓存延迟）
+
+**适用人群**：使用本地 RSS 客户端（如 iOS 的 NetNewsWire, Android 的 FeedMe 等），且网络能正常访问 `github.io` 的用户。
+**优点**：官方原生支持，零成本，配置只需 10 秒，且**每次更新文件后立刻生效，完全没有缓存延迟**。
+
+**操作步骤：**
+1. 在你的 GitHub 仓库主页，点击顶部的 `Settings`（设置）。
+2. 在左侧边栏往下划，找到并点击 `Pages`。
+3. 在 `Build and deployment` 区块下，将 `Source` 设置为 **Deploy from a branch**。
+4. 在下面的 `Branch` 下拉菜单中，选择你的默认分支（通常是 `master` 或 `main`），后面的文件夹保持 `/(root)` 不变，点击 **Save** 保存。
+5. 等待 1-2 分钟，刷新页面，顶部会出现类似 `Your site is live at https://xxx.github.io/...` 的提示。
+
+**🎉 你的专属订阅链接：**
 ```text
-[https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml]
+https://你的用户名.github.io/你的仓库名/feed.xml
+```
+
+---
+
+### 方案二：部署到 Cloudflare Pages（🚀 进阶推荐：国内访问最稳定）
+
+**适用人群**：所在网络环境下 `github.io` 访问极慢或被屏蔽，追求极致稳定性的极客用户。
+**优点**：依托 Cloudflare 强大的全球 CDN 节点，国内访问极速；且与 GitHub 仓库深度绑定，每次更新自动秒级同步，**彻底杜绝缓存问题**。
+
+**操作步骤：**
+1. 注册或登录免费的 [Cloudflare 控制台](https://dash.cloudflare.com/)。
+2. 在左侧菜单点击 `Workers 和 Pages`，然后点击蓝色的 `创建` 按钮。
+3. 切换到 `Pages` 选项卡，点击 **连接到 Git**。
+4. 授权并登录你的 GitHub 账号，选中你 Fork 的这个新闻联播仓库，点击 `开始设置`。
+5. 在构建设置页面，**什么都不用改**（框架预设保持 None，构建命令留空），直接点击底部的 **保存并部署**。
+6. 等待几十秒部署完成，Cloudflare 会免费分配给你一个 `pages.dev` 结尾的域名。
+
+**🎉 你的专属订阅链接：**
+```text
+https://你设置的前缀.pages.dev/feed.xml
+```
+
+---
+
+### 方案三：使用公共代理加速链接（⚠️ 备选：适合不想折腾的懒人）
+
+**适用人群**：不想注册任何账号，也不想配置 Pages，只想复制链接就能用的国内用户。
+**优点**：无需任何配置。
+**缺点**：存在严重的「缓存刺客」问题。公共代理为了节省服务器带宽，会设置极长的强缓存（甚至长达 12 小时）。这会导致你的仓库明明已经抓取了今天的新闻，但 RSS 客户端拉取到的还是昨天旧文件。
+
+**操作步骤：**
+直接在你的原始 raw 链接前加上 `https://ghproxy.org/`（或其他 GitHub 加速节点）即可。
+
+**🎉 你的专属订阅链接：**
+```text
+https://ghproxy.org/https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml
+```
+
+> 💡 **终极防缓存秘籍**：如果你发现今天的新闻死活刷不出来，请在你的 RSS 客户端中编辑这个订阅源，在链接的最末尾加上 `?v=随机数字`（例如今天加 `?v=1`，明天加 `?v=2`）。这能强制欺骗 CDN，让它认为这是一个全新的网址，从而立刻去抓取最新内容。
+
+---
+
+### 方案四：云端 RSS 服务专用（☁️ Inoreader / Feedly 等）
+
+**适用人群**：使用 Inoreader、Feedly、Feedbin 等自带海外云端抓取服务器的商业 RSS 服务的用户。
+**说明**：由于这些服务是由它们架设在海外的服务器去抓取你的 `feed.xml`，所以**完全不存在被墙的问题**。请千万不要画蛇添足地使用方案三的加速链接，这反而会引入缓存。
+
+**🎉 你的专属订阅链接：**
+请直接复制 GitHub 官方的 Raw 原始链接：
+```text
+https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xml
 ```
 
 # 新闻联播文字稿
