@@ -55,7 +55,7 @@ files.forEach(file => {
   feed.addItem({
     title: `${y}年${m}月${d}日 新闻联播文字稿`,
     id: file,
-    link: `https://github.com/ALLCAPS-Droid/xin-wen-lian-bo/`, 
+    link: `https://github.com/ALLCAPS-Droid/xin-wen-lian-bo/blob/master/news/${file}`,
     content: htmlContent,
     // ====== 强行加上作者信息，防止某些弱智客户端报错 ======
     author: [
