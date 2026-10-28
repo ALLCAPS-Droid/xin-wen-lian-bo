@@ -132,6 +132,7 @@ https://raw.githubusercontent.com/你的用户名/你的仓库名/master/feed.xm
 ## 文字稿目录: 
 
 <!-- INSERT -->
+- [20261028](./news/20261028.md)
 - [20261027](./news/20261027.md)
 - [20261026](./news/20261026.md)
 - [20261025](./news/20261025.md)
